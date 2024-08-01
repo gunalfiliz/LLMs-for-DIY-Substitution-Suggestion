@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>URL Input</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            margin: 10px;
+            width: 300px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        textarea {
+            width: 300px;
+            height: 100px;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Enter URL</h2>
+        <input type="text" id="urlInput" placeholder="Enter URL here">
+        <br><br>
+        <button id="myButton">Submit</button>
+        <br><br>
+        <textarea id="resultText" readonly placeholder="Result will be displayed here"></textarea>
+    </div>
+
+    <script>
+        console.log('Client-side code running');
+
+        const button = document.getElementById('myButton');
+        button.addEventListener('click', function(e) {
+            const url = document.getElementById('urlInput').value;
+            if (url) {
+                fetch('/clicked', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ url: url })
+                })
+                .then(function(response) {
+                    if (response.ok) {
+                        console.log('URL sent to the server');
+                        return response.text(); // Return the response text
+                    }
+                    throw new Error('Request failed.');
+                })
+                .then(function(data) {
+                    document.getElementById('resultText').value = data; 
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+            }
+        });
+
+    </script>
+</body>
+</html>
