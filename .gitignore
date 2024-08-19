@@ -1,0 +1,6 @@
+/app/.env
+node_modules/
+/app/high_res_frames/
+/app/transcripts/
+/app/video_images/
+/evaluation/results/

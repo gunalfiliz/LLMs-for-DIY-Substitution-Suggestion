@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIY Substitution Finder</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eeece2;
+            color: #3d3929;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 90%;
+        }
+        h2 {
+            color: #da7756;
+            margin-bottom: 24px;
+            font-size: 32px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            text-align: left;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #3d3929;
+        }
+        input[type="text"] {
+            padding: 12px;
+            width: 100%;
+            border-radius: 6px;
+            border: 2px solid #da7756;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 6px;
+            background-color: #bd5d3a;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #da7756;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        textarea {
+            width: 100%;
+            height: 300px;
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 6px;
+            border: 2px solid #da7756;
+            font-size: 16px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>DIY Substitution Finder</h2>
+        <div class="input-group">
+            <label for="urlInput">Enter DIY Tutorial URL:</label>
+            <input type="text" id="urlInput" placeholder="https://example.com/diy-tutorial">
+        </div>
+        <button id="myButton">Find Substitutions</button>
+        <textarea id="resultText" readonly placeholder="Substitution suggestions from comments will appear here..."></textarea>
+    </div>
+    <script>
+        console.log('DIY Substitution Finder initialized');
+        const button = document.getElementById('myButton');
+        button.addEventListener('click', function(e) {
+            const url = document.getElementById('urlInput').value;
+            if (url) {
+                fetch('/clicked', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ url: url })
+                })
+                .then(function(response) {
+                    if (response.ok) {
+                        console.log('URL sent for substitution analysis');
+                        return response.text();
+                    }
+                    throw new Error('Request failed.');
+                })
+                .then(function(data) {
+                    document.getElementById('resultText').value = data;
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
